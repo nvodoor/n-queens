@@ -115,13 +115,12 @@
           // true
           // else false
       var count = 0;
-
       for (var row in this.attributes) { 
         if (Array.isArray(this.attributes[row])) { 
           var value = this.attributes[row][colIndex];
           count += value;
         }
-      };
+      }
 
       return count > 1 ? true : false; // fixme
     },
@@ -199,7 +198,6 @@
         column -= 1;
         chessRow += 1;
       }
-      console.log(count);
       return count > 1 ? true : false;  // fixme
     },
 
