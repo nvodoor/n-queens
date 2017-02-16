@@ -14,19 +14,78 @@
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 
 
+window.pieceCounter = function (boardArray) {
+  var counter = 0;
+  for (var i = 0; i < boardArray.length; i++) {
+    for (var j = 0; j < boardArray.length; j++) {
+      if (boardArray[i][j] === 1) {
+        counter++;
+      }
+    }
+  }
+  return counter;
+};
 
 window.findNRooksSolution = function(n) {
-  // debugger;
-  var solution = this.Board; //fixme
-  var grid = new Board({'n' : n});
-  console.log(grid.get);
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
+  var solution = []; //fixme
+  var grid = new Board({'n': n});
+
+  var solutionFinder = function (board) {
+    if ( pieceCounter(board.rows()) === n) {
+      solution = board.rows();
+      return;
+    }
+
+    for ( var r = 0; r < board.attributes.n; r++) {
+      for ( var c = 0; c < board.attributes.n; c++) {
+        if (board.attributes[r][c] === 0) {
+          board.togglePiece(r, c);
+          if (board.hasAnyRooksConflicts()) {
+            board.togglePiece(r, c);
+          } else {
+            solutionFinder(board);
+            // board.togglePiece(r, c);
+          }
+        }
+      }
+    }
+  };
+
+  solutionFinder(grid);
+  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution) );
   return solution;
 };
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
   var solutionCount = undefined; //fixme
+
+  // var solutionFinder = function (board) {
+  //   if ( pieceCounter(board.rows()) === n) {
+  //     solution = board.rows();
+  //     return;
+  //   }
+    
+  //   if (board.attributes.n === 1) {
+  //     board.togglePiece(0, 0);
+  //     solution = board.rows();
+  //     return;
+  //   }
+
+  //   for ( var r = 0; r < board.attributes.n; r++) {
+  //     for ( var c = 0; c < board.attributes.n; c++) {
+  //       if (board.attributes[r][c] === 0) {
+  //         board.togglePiece(r, c);
+  //         if (board.hasAnyRooksConflicts()) {
+  //           board.togglePiece(r, c);
+  //         } else {
+  //           solutionFinder(board);
+  //           board.togglePiece(r, c);
+  //         }
+  //       }
+  //     }
+  //   }
+  // };
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
