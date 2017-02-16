@@ -156,8 +156,8 @@
         var value = this.attributes[chessRow][column];
 
         count += value;
-        column < this.attributes.n ? column += 1 : column;
-        chessRow < this.attributes.n ? chessRow += 1 : chessRow;
+        column += 1;
+        chessRow += 1; 
       }
       return count > 1 ? true : false; 
 
@@ -185,15 +185,41 @@
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
-    hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+    hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow, chessRow) {
+      chessRow = chessRow || 0;
+      var column = minorDiagonalColumnIndexAtFirstRow;
+
+      var count = 0;
+
+      while (chessRow < this.attributes.n && column >= 0) {
+  
+        var value = this.attributes[chessRow][column];
+
+        count += value;
+        column -= 1;
+        chessRow += 1;
+      }
+      console.log(count);
+      return count > 1 ? true : false;  // fixme
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
+      var obj = this.attributes;
+      
+      for (var i = obj.n - 1; i >= 0; i--) {
+        if (this.hasMinorDiagonalConflictAt(i, 0) ) {
+          return true;
+        }
+      }
+
+      for (var i = 0; i < obj.n; i++) {
+        if (this.hasMinorDiagonalConflictAt(3, i) ) {
+          return true;
+        }
+      }
       return false; // fixme
     }
-
     /*--------------------  End of Helper Functions  ---------------------*/
 
 
