@@ -52,23 +52,21 @@ window.findNRooksSolution = function(n) {
   };
 
   solutionFinder(grid);
-  console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution) );
+  //console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution) );
   return solution;
 };
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  // debugger;
+  // var solutionCount = 0; //fixme
+  // var grid = new Board({'n': n});
 
   // var solutionFinder = function (board) {
   //   if ( pieceCounter(board.rows()) === n) {
-  //     solution = board.rows();
-  //     return;
-  //   }
-    
-  //   if (board.attributes.n === 1) {
-  //     board.togglePiece(0, 0);
-  //     solution = board.rows();
+  //     // debugger;
+  //     // console.log('im here');
+  //     solutionCount++;
   //     return;
   //   }
 
@@ -86,14 +84,49 @@ window.countNRooksSolutions = function(n) {
   //     }
   //   }
   // };
+  // solutionFinder(grid);
 
-  console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
-  return solutionCount;
+
+  if ( n === 0 ){
+    return 1;
+  }
+
+  // console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
+  return (n * countNRooksSolutions(n - 1));
 };
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  var solution = undefined; //fixme
+  var solution = []; //fixme
+
+
+
+
+  var grid = new Board({'n': n});
+
+  var solutionFinder = function (board) {
+    if ( pieceCounter(board.rows()) === n) {
+      debugger;
+      solution = board.rows();
+      return;
+    }
+
+    for ( var r = 0; r < board.attributes.n; r++) {
+      for ( var c = 0; c < board.attributes.n; c++) {
+        if (board.attributes[r][c] === 0) {
+          board.togglePiece(r, c);
+          if (board.hasAnyQueensConflicts()) {
+            board.togglePiece(r, c);
+          } else {
+            solutionFinder(board);
+            // board.togglePiece(r, c);
+          }
+        }
+      }
+    }
+  };
+
+  solutionFinder(grid);
 
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
   return solution;
