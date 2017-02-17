@@ -138,14 +138,12 @@ window.findNQueensSolution = function(n) {
 
     for (var i = 0; i < n; i++) {
       board.togglePiece(row, i);
-      // recurse into remaining problem
       if (!board.hasAnyQueensConflicts()) {
         var result = findSolution(row + 1, n, board, callback);
         if (result) {
-          return result; // EJECT
+          return result; 
         }
       }
-      // unplace a piece
       board.togglePiece(row, i);
     }
 
