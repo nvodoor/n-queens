@@ -130,19 +130,17 @@ window.findNQueensSolution = function(n) {
   // var solution = []; //fixme
   var grid = new Board({'n': n});
 
-  var findSolution = function(row, n, board, validator, callback) {
-    // if all rows exhausted, this is a valid solution.
+  var findSolution = function(row, n, board, callback) {
+    
     if (row === n) {
       return callback();
     }
 
-    // iterate over possible decisions
     for (var i = 0; i < n; i++) {
-      // place a piece
       board.togglePiece(row, i);
       // recurse into remaining problem
-      if (!board[validator]()) {
-        var result = findSolution(row + 1, n, board, validator, callback);
+      if (!board.hasAnyQueensConflicts()) {
+        var result = findSolution(row + 1, n, board, callback);
         if (result) {
           return result; // EJECT
         }
@@ -172,7 +170,7 @@ window.findNQueensSolution = function(n) {
     // }
   };
 
-  var solution = findSolution(0, n, grid, 'hasAnyQueensConflicts', function() {
+  var solution = findSolution(0, n, grid, function() {
     return _.map(grid.rows(), function(row) {
       return row.slice();
     });
